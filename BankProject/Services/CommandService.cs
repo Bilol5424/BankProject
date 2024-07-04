@@ -36,7 +36,7 @@ public class CommandService
                 Console.WriteLine($"Некорректный ввод: {readLine}");
             }
 
-            var pattern = "^[А-ЯЁA-Z][а-яёa-z]+[А-ЯЁA-Z][а-яёa-z]+([А-ЯЁA-Z][а-яёa-z])?$";
+            var pattern = "^[А-ЯЁA-Z][а-яёa-z]+ [А-ЯЁA-Z][а-яёa-z]+ ([А-ЯЁA-Z][а-яёa-z]+)?$";
 
             if (Regex.IsMatch(readLine!, pattern))
             {
