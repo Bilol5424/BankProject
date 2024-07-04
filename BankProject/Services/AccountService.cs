@@ -8,7 +8,7 @@ public class AccountService
 
     public bool Create(string accountNumber, string owner, decimal balance)
     {
-        var account = Accounts.FirstOrDefault(x => x.Number == accountNumber);
+        var account = Accounts.Find(x => x.Number == accountNumber);
 
         if (account is not null)
         {
@@ -38,17 +38,17 @@ public class AccountService
 
         return true;
     }
-    
+
     public bool Deposit(string accountNumber, decimal amount)
     {
         var account = Accounts.Find(x => x.Number == accountNumber);
-        
+
         if (amount <= 0)
         {
             Console.WriteLine("Сумма депозита должна быть положительной.");
             return false;
         }
-        
+
         if (account is null)
         {
             Console.WriteLine("Счет не найден!");
@@ -63,7 +63,7 @@ public class AccountService
 
         return true;
     }
-    
+
     public bool Withdraw(string accountNumber, decimal amount)
     {
         var account = Accounts.Find(x => x.Number == accountNumber);
@@ -79,10 +79,11 @@ public class AccountService
             Console.WriteLine("Сумма должна быть положительной.");
             return false;
         }
-        
+
         if (account.Balance < amount)
         {
-            Console.WriteLine($"На вашем счету недостаточно средств для списания необходимой суммы. Текущий баланс: {account.Balance:C}, нехватающая сумма: {amount - account.Balance:C}.");
+            Console.WriteLine(
+                $"На вашем счету недостаточно средств для списания необходимой суммы. Текущий баланс: {account.Balance:C}, нехватающая сумма: {amount - account.Balance:C}.");
             return false;
         }
 
@@ -94,9 +95,9 @@ public class AccountService
 
         return true;
     }
+
     public List<Account> GetAllAccounts()
     {
         return Accounts;
     }
-
 }

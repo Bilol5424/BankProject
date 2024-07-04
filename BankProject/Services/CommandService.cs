@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using BankProject.Entities;
 
 namespace BankProject.Services;
 
@@ -7,7 +6,7 @@ public class CommandService
 {
     private AccountService AccountService { get; set; } = new();
 
-    public bool AddAccount()
+    public void AddAccount()
     {
         string accountNumber;
         while (true)
@@ -49,12 +48,12 @@ public class CommandService
             Console.WriteLine($"Некорректный ввод: {readLine}");
         }
 
-        decimal balance = default;
+        decimal balance;
         while (true)
         {
             Console.Write("Введите начальный баланс: ");
             var readLine = Console.ReadLine();
-            
+
             if (decimal.TryParse(readLine, out var tmp))
             {
                 if (tmp < 0)
@@ -74,35 +73,37 @@ public class CommandService
         }
 
         AccountService.Create(accountNumber, owner, balance);
-
-        return true;
     }
-    
+
     public void Deposit()
     {
         Console.WriteLine("Введите номер счета: ");
-        string accountNumber = Console.ReadLine();
+        var accountNumber = Console.ReadLine();
         Console.WriteLine("Введите сумму для пополнения: ");
+
         decimal amount;
+
         while (!decimal.TryParse(Console.ReadLine(), out amount) || amount <= 0)
         {
             Console.WriteLine("Некорректная сумма. Введите положительное число.");
         }
-        
+
         AccountService.Deposit(accountNumber!, amount);
     }
-    
+
     public void Withdraw()
     {
-        
         Console.WriteLine("Введите номер счета: ");
-        string accountNumber = Console.ReadLine();
+        var accountNumber = Console.ReadLine();
+
         Console.WriteLine("Введите сумму для списания: ");
         decimal amount;
+
         while (!decimal.TryParse(Console.ReadLine(), out amount) || amount <= 0)
         {
             Console.WriteLine("Некорректная сумма. Введите положительное число.");
         }
+
         AccountService.Withdraw(accountNumber!, amount);
     }
 
@@ -110,10 +111,11 @@ public class CommandService
     {
         var accounts = AccountService.GetAllAccounts();
         Console.WriteLine("Cписок всех аккаунтов:");
+
         foreach (var account in accounts)
         {
-            Console.WriteLine($"Номер аккаунта:{account.Number}, ФИО владелца: {account.Owner}, баланс: {account.Balance}.");
+            Console.WriteLine(
+                $"Номер аккаунта:{account.Number}, ФИО владелца: {account.Owner}, баланс: {account.Balance}.");
         }
     }
-
 }

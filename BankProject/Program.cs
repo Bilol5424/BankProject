@@ -18,10 +18,8 @@ while (true)
         {
             break;
         }
-        else
-        {
-            Console.WriteLine("Некорректный ввод. Введите целое число.");
-        }
+
+        Console.WriteLine("Некорректный ввод. Введите целое число.");
     }
     
     switch (command)
@@ -36,7 +34,6 @@ while (true)
         
         case 3:
             commandService.ShowAccounts();
-            
             break;
         
         case 4:
