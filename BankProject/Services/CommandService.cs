@@ -1,9 +1,11 @@
 ﻿using System.Text.RegularExpressions;
+using BankProject.Entities;
+
 namespace BankProject.Services;
 
 public class CommandService
 {
-    public AccountService AccountService { get; set; } = new();
+    private AccountService AccountService { get; set; } = new();
 
     public bool AddAccount()
     {
@@ -36,7 +38,7 @@ public class CommandService
                 Console.WriteLine($"Некорректный ввод: {readLine}");
             }
 
-            var pattern = "^[А-ЯЁA-Z][а-яёa-z]+ [А-ЯЁA-Z][а-яёa-z]+ ([А-ЯЁA-Z][а-яёa-z]+)?$";
+            var pattern = "^[А-ЯЁA-Z][а-яёa-z]+ [А-ЯЁA-Z][а-яёa-z]+$";
 
             if (Regex.IsMatch(readLine!, pattern))
             {
@@ -55,18 +57,19 @@ public class CommandService
             
             if (decimal.TryParse(readLine, out var tmp))
             {
-                balance = tmp;
-                break;
-            }
-
-            if (balance < 0)
-            {
-                Console.WriteLine("Началный баланс не может быть отрецательным");
+                if (tmp < 0)
+                {
+                    Console.WriteLine("Началный баланс не может быть отрецательным");
+                }
+                else
+                {
+                    balance = tmp;
+                    break;
+                }
             }
             else
             {
                 Console.WriteLine("Началный баланс не может быть пустым");
-                break;
             }
         }
 
@@ -74,4 +77,43 @@ public class CommandService
 
         return true;
     }
+    
+    public void Deposit()
+    {
+        Console.WriteLine("Введите номер счета: ");
+        string accountNumber = Console.ReadLine();
+        Console.WriteLine("Введите сумму для пополнения: ");
+        decimal amount;
+        while (!decimal.TryParse(Console.ReadLine(), out amount) || amount <= 0)
+        {
+            Console.WriteLine("Некорректная сумма. Введите положительное число.");
+        }
+        
+        AccountService.Deposit(accountNumber!, amount);
+    }
+    
+    public void Withdraw()
+    {
+        
+        Console.WriteLine("Введите номер счета: ");
+        string accountNumber = Console.ReadLine();
+        Console.WriteLine("Введите сумму для списания: ");
+        decimal amount;
+        while (!decimal.TryParse(Console.ReadLine(), out amount) || amount <= 0)
+        {
+            Console.WriteLine("Некорректная сумма. Введите положительное число.");
+        }
+        AccountService.Withdraw(accountNumber!, amount);
+    }
+
+    public void ShowAccounts()
+    {
+        var accounts = AccountService.GetAllAccounts();
+        Console.WriteLine("Cписок всех аккаунтов:");
+        foreach (var account in accounts)
+        {
+            Console.WriteLine($"Номер аккаунта:{account.Number}, ФИО владелца: {account.Owner}, баланс: {account.Balance}.");
+        }
+    }
+
 }

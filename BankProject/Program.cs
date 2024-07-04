@@ -31,15 +31,16 @@ while (true)
             break;
         
         case 2:
-            commandService.AccountService.Withdraw();
+            commandService.Withdraw();
             break;
         
         case 3:
-            commandService.AccountService.ShowOllAccounts();
+            commandService.ShowAccounts();
+            
             break;
         
         case 4:
-            commandService.AccountService.Deposit();
+            commandService.Deposit();
             break;
         
         case 5:

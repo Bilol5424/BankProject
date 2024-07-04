@@ -38,53 +38,10 @@ public class AccountService
 
         return true;
     }
-
-    public void ShowOllAccounts()
-    {
-        Console.WriteLine("Список всех счётов:");
-        foreach (var account in Accounts)
-        {
-            Console.WriteLine(account);
-        }
-    }
-
     
-    
-    public void Deposit()
-    {
-        Console.WriteLine("Введите номер счета: ");
-        string depositAccountNumber = Console.ReadLine();
-        Console.WriteLine("Введите сумму для пополнения: ");
-        decimal depositAmount;
-        while (!decimal.TryParse(Console.ReadLine(), out depositAmount) || depositAmount <= 0)
-        {
-            Console.WriteLine("Некорректная сумма. Введите положительное число.");
-        }
-        Deposit(depositAccountNumber, depositAmount);
-    }
-
-    
-    
-    public void Withdraw()
-    {
-        
-        
-        Console.WriteLine("Введите номер счета: ");
-        string withdrawAccountNumber = Console.ReadLine();
-        Console.WriteLine("Введите сумму для списания: ");
-        decimal withdrawAmount;
-        while (!decimal.TryParse(Console.ReadLine(), out withdrawAmount) || withdrawAmount <= 0)
-        {
-            Console.WriteLine("Некорректная сумма. Введите положительное число.");
-        }
-        Withdraw(withdrawAccountNumber, withdrawAmount);
-    }
-
     public bool Deposit(string accountNumber, decimal amount)
     {
-        var account = Accounts.FirstOrDefault(x => x.Number == accountNumber);
-
-        
+        var account = Accounts.Find(x => x.Number == accountNumber);
         
         if (amount <= 0)
         {
@@ -106,13 +63,10 @@ public class AccountService
 
         return true;
     }
-
-    
-    
     
     public bool Withdraw(string accountNumber, decimal amount)
     {
-        var account = Accounts.FirstOrDefault(x => x.Number == accountNumber);
+        var account = Accounts.Find(x => x.Number == accountNumber);
 
         if (account is null)
         {
@@ -140,9 +94,9 @@ public class AccountService
 
         return true;
     }
-
-    /*public Account GetAccount(string accountNumber)
+    public List<Account> GetAllAccounts()
     {
-        return Accounts.Find(a => a.Number == accountNumber);
-    }*/
+        return Accounts;
+    }
+
 }
