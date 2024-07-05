@@ -106,12 +106,12 @@ public class AccountService
         Console.WriteLine();
         var fromAccount = Accounts.Find(x => x.Number == fromAccountNumber);
         var toAccount = Accounts.Find(x => x.Number == accountNumberTo);
-        
+
         if (fromAccount is null)
         {
-            Console.WriteLine("Нет такого счёта или счёт неправильный");
+            Console.WriteLine("Счет отправителя не найден!");
         }
-        
+
         if (toAccount is null)
         {
             Console.WriteLine("Счет получателя не найден!");
@@ -124,7 +124,7 @@ public class AccountService
             return false;
         }
 
-        if (fromAccount.Balance < amount)
+        if (fromAccount!.Balance < amount)
         {
             Console.WriteLine("Недостаточно средств на счёте.");
             return false;
@@ -132,9 +132,12 @@ public class AccountService
 
         fromAccount.Balance -= amount;
         toAccount.Balance += amount;
+
         Console.ForegroundColor = ConsoleColor.DarkGreen;
-        Console.WriteLine($"Сумма {amount:C} переведена со счёта {fromAccount.Number} на счёт {toAccount.Number}. Баланс отправителя: {fromAccount.Balance:C}, баланс получателя: {toAccount.Balance:C}.");
+        Console.WriteLine(
+            $"Сумма {amount:C} переведена со счёта {fromAccount.Number} на счёт {toAccount.Number}. Баланс отправителя: {fromAccount.Balance:C}, баланс получателя: {toAccount.Balance:C}.");
         Console.ResetColor();
+
         return true;
     }
 }

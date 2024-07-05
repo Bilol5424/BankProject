@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using System.Threading.Channels;
 
 namespace BankProject.Services;
 
@@ -111,7 +110,7 @@ public class CommandService
     public void ShowAccounts()
     {
         var accounts = AccountService.GetAllAccounts();
-        Console.WriteLine("Cписок всех аккаунтов:");
+        Console.WriteLine("Список всех аккаунтов:");
 
         foreach (var account in accounts)
         {
@@ -122,12 +121,10 @@ public class CommandService
 
     public void SendMoney()
     {
-       
-        
         string fromAccountNumber;
         while (true)
         {
-            Console.WriteLine("Введите номер счёта с которого нужно отправить средства:");
+            Console.WriteLine("Введите счёт отправителя:");
             var readLine = Console.ReadLine();
 
             if (readLine is null)
@@ -141,11 +138,11 @@ public class CommandService
 
             Console.WriteLine($"Некорректный ввод: {readLine}");
         }
-        
-        string accountNumberTo;
+
+        string toAccountNumber;
         while (true)
         {
-            Console.WriteLine("Введите номер счёта на который нужно отправить средства:");
+            Console.WriteLine("Введите счёта получателя:");
             var readLine = Console.ReadLine();
 
             if (readLine is null)
@@ -153,7 +150,7 @@ public class CommandService
 
             if (Regex.IsMatch(readLine!, "\\d{20}"))
             {
-                accountNumberTo = readLine!;
+                toAccountNumber = readLine!;
                 break;
             }
 
@@ -165,12 +162,9 @@ public class CommandService
 
         while (!decimal.TryParse(Console.ReadLine(), out amount) || amount <= 0)
         {
-            Console.WriteLine("Некорректная сумма. Введите положительное число.");
+            Console.WriteLine("Некорректная сумма.");
         }
 
-        Console.WriteLine($"Средства успешно начислены. Баланс первого счёта: . Баланс второго счёта: .");
-
-        AccountService.SendMoney(fromAccountNumber, accountNumberTo, amount);
+        AccountService.SendMoney(fromAccountNumber, toAccountNumber, amount);
     }
-    
 }
