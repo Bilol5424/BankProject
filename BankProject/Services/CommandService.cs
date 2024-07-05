@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Threading.Channels;
 
 namespace BankProject.Services;
 
@@ -118,4 +119,58 @@ public class CommandService
                 $"Номер аккаунта:{account.Number}, ФИО владелца: {account.Owner}, баланс: {account.Balance}.");
         }
     }
+
+    public void SendMoney()
+    {
+       
+        
+        string fromAccountNumber;
+        while (true)
+        {
+            Console.WriteLine("Введите номер счёта с которого нужно отправить средства:");
+            var readLine = Console.ReadLine();
+
+            if (readLine is null)
+                Console.WriteLine($"Некорректный ввод: {readLine}");
+
+            if (Regex.IsMatch(readLine!, "\\d{20}"))
+            {
+                fromAccountNumber = readLine!;
+                break;
+            }
+
+            Console.WriteLine($"Некорректный ввод: {readLine}");
+        }
+        
+        string accountNumberTo;
+        while (true)
+        {
+            Console.WriteLine("Введите номер счёта на который нужно отправить средства:");
+            var readLine = Console.ReadLine();
+
+            if (readLine is null)
+                Console.WriteLine($"Некорректный ввод: {readLine}");
+
+            if (Regex.IsMatch(readLine!, "\\d{20}"))
+            {
+                accountNumberTo = readLine!;
+                break;
+            }
+
+            Console.WriteLine($"Некорректный ввод: {readLine}");
+        }
+
+        Console.WriteLine("Введите сумму начисления:");
+        decimal amount;
+
+        while (!decimal.TryParse(Console.ReadLine(), out amount) || amount <= 0)
+        {
+            Console.WriteLine("Некорректная сумма. Введите положительное число.");
+        }
+
+        Console.WriteLine($"Средства успешно начислены. Баланс первого счёта: . Баланс второго счёта: .");
+
+        AccountService.SendMoney(fromAccountNumber, accountNumberTo, amount);
+    }
+    
 }

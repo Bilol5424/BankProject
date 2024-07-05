@@ -6,7 +6,7 @@ while (true)
 {
     Console.ForegroundColor = ConsoleColor.DarkGreen;
     Console.WriteLine($"1.Добавить Счёт \t 2.Списание денег \t 3.Показать список всех счётов");
-    Console.WriteLine($"4.Пополнить баланс \t 5.Выход из программы");
+    Console.WriteLine($"4.Пополнить баланс \t 5.Перевести на другой счёт \t 6.Выход из программы");
     Console.ResetColor();
     
     int command;
@@ -41,11 +41,13 @@ while (true)
             break;
         
         case 5:
+            commandService.SendMoney();
+            break;
+        case 6:
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Программа закончила свою работу");
             Console.ResetColor();
             return;
-        
         default:
             Console.WriteLine("Команда не распознана. Выберите правильный номер команды.");
             break;

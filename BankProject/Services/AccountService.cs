@@ -100,4 +100,41 @@ public class AccountService
     {
         return Accounts;
     }
+
+    public bool SendMoney(string fromAccountNumber, string accountNumberTo, decimal amount)
+    {
+        Console.WriteLine();
+        var fromAccount = Accounts.Find(x => x.Number == fromAccountNumber);
+        var toAccount = Accounts.Find(x => x.Number == accountNumberTo);
+        
+        if (fromAccount is null)
+        {
+            Console.WriteLine("Нет такого счёта или счёт неправильный");
+        }
+        
+        if (toAccount is null)
+        {
+            Console.WriteLine("Счет получателя не найден!");
+            return false;
+        }
+
+        if (fromAccountNumber == accountNumberTo)
+        {
+            Console.WriteLine("Нельзя отправить средства самому себе!");
+            return false;
+        }
+
+        if (fromAccount.Balance < amount)
+        {
+            Console.WriteLine("Недостаточно средств на счёте.");
+            return false;
+        }
+
+        fromAccount.Balance -= amount;
+        toAccount.Balance += amount;
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
+        Console.WriteLine($"Сумма {amount:C} переведена со счёта {fromAccount.Number} на счёт {toAccount.Number}. Баланс отправителя: {fromAccount.Balance:C}, баланс получателя: {toAccount.Balance:C}.");
+        Console.ResetColor();
+        return true;
+    }
 }
