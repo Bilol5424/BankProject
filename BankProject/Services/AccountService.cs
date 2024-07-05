@@ -130,6 +130,12 @@ public class AccountService
             return false;
         }
 
+        if (amount <= 0)
+        {
+            Console.WriteLine("Некорректная сумма. Введите заново");
+            return false;
+        }
+
         fromAccount.Balance -= amount;
         toAccount.Balance += amount;
 
